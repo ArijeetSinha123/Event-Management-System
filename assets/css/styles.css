@@ -1,0 +1,78 @@
+/* Custom Styles for Event Management System */
+
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.stat-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.event-card {
+    border-left: 4px solid #007bff;
+    transition: transform 0.2s;
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.card {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border: none;
+}
+
+.table th {
+    border-top: none;
+    font-weight: 600;
+}
+
+.btn {
+    border-radius: 6px;
+}
+
+.alert {
+    border: none;
+    border-radius: 8px;
+}
+
+.badge {
+    font-size: 0.8em;
+}
+
+.list-group-item {
+    border: 1px solid rgba(0,0,0,0.125);
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 60px 0;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+}

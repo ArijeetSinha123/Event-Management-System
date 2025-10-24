@@ -154,7 +154,7 @@ require_once 'includes/functions.php';
             </div>
         </div>
     </div>
-    
+
     <!-- Authentication Section -->
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -185,7 +185,7 @@ require_once 'includes/functions.php';
     </div>
 
     <footer class="bg-dark text-white text-center py-4">
-        <p>&copy; 2024 Event Management System. Developed by Team.</p>
+        <p>&copy; 2024 Event Management System. Developed by Jack Troller.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

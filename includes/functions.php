@@ -29,4 +29,10 @@ function isUserRegistered($pdo, $user_id, $event_id) {
     $stmt->execute([$user_id, $event_id]);
     return $stmt->fetch()['count'] > 0;
 }
+
+function getRegistrationCountForEvent($pdo, $event_id) {
+    $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM registrations WHERE event_id = ?");
+    $stmt->execute([$event_id]);
+    return $stmt->fetch()['count'];
+}
 ?>

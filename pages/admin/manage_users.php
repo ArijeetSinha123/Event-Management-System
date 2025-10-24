@@ -1,4 +1,13 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 'admin') {
+    header('Location: ../login.php');
+    exit;
+}
+require_once '../../config/database.php';
+require_once '../../includes/functions.php';
+?>
+<?php
 require_once '../../config/database.php';
 require_once '../../includes/functions.php';
 

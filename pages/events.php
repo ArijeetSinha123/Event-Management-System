@@ -2,9 +2,16 @@
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 
+// Check if user is logged in
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 // Handle registration
-if ($_POST && isset($_POST['user_id']) && isset($_POST['event_id'])) {
-    $user_id = $_POST['user_id'];
+if ($_POST && isset($_POST['event_id'])) {
+    $user_id = $_SESSION['user_id'];
     $event_id = $_POST['event_id'];
     
     try {
@@ -25,14 +32,25 @@ if ($_POST && isset($_POST['user_id']) && isset($_POST['event_id'])) {
 $stmt = $pdo->query("SELECT * FROM events ORDER BY event_date, event_time");
 $events = $stmt->fetchAll();
 
-// Get all users for registration
-$users = $pdo->query("SELECT * FROM users WHERE role = 'student'")->fetchAll();
+// Get user's registrations
+$user_registrations = [];
+if (isset($_SESSION['user_id'])) {
+    $stmt = $pdo->prepare("SELECT event_id FROM registrations WHERE user_id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $user_registrations = $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
 ?>
 
 <?php include '../includes/header.php'; ?>
 
 <div class="container">
     <h1 class="text-center mb-4">📅 All Events</h1>
+
+    <!-- Welcome Message -->
+    <div class="alert alert-info">
+        <h5><i class="fas fa-user"></i> Welcome, <?php echo $_SESSION['user_name']; ?>!</h5>
+        <p class="mb-0">You are logged in as: <strong><?php echo $_SESSION['student_id']; ?></strong></p>
+    </div>
 
     <!-- Success/Error Messages -->
     <?php if (isset($success)): ?>
@@ -52,11 +70,20 @@ $users = $pdo->query("SELECT * FROM users WHERE role = 'student'")->fetchAll();
                 </div>
             </div>
         <?php else: ?>
-            <?php foreach ($events as $event): ?>
+            <?php foreach ($events as $event): 
+                $is_registered = in_array($event['id'], $user_registrations);
+                $registration_count = getRegistrationCountForEvent($pdo, $event['id']);
+                $is_full = $registration_count >= $event['max_participants'];
+            ?>
                 <div class="col-md-6 mb-4">
                     <div class="card event-card h-100">
-                        <div class="card-header bg-primary text-white">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                             <h5 class="card-title mb-0"><?php echo htmlspecialchars($event['title']); ?></h5>
+                            <?php if ($is_registered): ?>
+                                <span class="badge bg-success">Registered</span>
+                            <?php elseif ($is_full): ?>
+                                <span class="badge bg-danger">Full</span>
+                            <?php endif; ?>
                         </div>
                         <div class="card-body">
                             <p class="card-text"><?php echo htmlspecialchars($event['description']); ?></p>
@@ -64,29 +91,28 @@ $users = $pdo->query("SELECT * FROM users WHERE role = 'student'")->fetchAll();
                                 <p><strong><i class="fas fa-calendar"></i> Date:</strong> <?php echo formatDate($event['event_date']); ?></p>
                                 <p><strong><i class="fas fa-clock"></i> Time:</strong> <?php echo formatTime($event['event_time']); ?></p>
                                 <p><strong><i class="fas fa-map-marker-alt"></i> Venue:</strong> <?php echo htmlspecialchars($event['venue']); ?></p>
-                                <p><strong><i class="fas fa-users"></i> Max Participants:</strong> <?php echo $event['max_participants']; ?></p>
+                                <p><strong><i class="fas fa-users"></i> Participants:</strong> 
+                                    <?php echo $registration_count . ' / ' . $event['max_participants']; ?>
+                                </p>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <!-- Registration Form -->
-                            <form method="POST" class="row g-2 align-items-center">
-                                <div class="col-md-7">
-                                    <select name="user_id" class="form-select" required>
-                                        <option value="">Select Student</option>
-                                        <?php foreach ($users as $user): ?>
-                                            <option value="<?php echo $user['id']; ?>">
-                                                <?php echo htmlspecialchars($user['student_id'] . ' - ' . $user['name']); ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <input type="hidden" name="event_id" value="<?php echo $event['id']; ?>">
-                                <div class="col-md-5">
-                                    <button type="submit" class="btn btn-success w-100">
-                                        <i class="fas fa-user-plus"></i> Register
+                            <?php if ($is_registered): ?>
+                                <button class="btn btn-success w-100" disabled>
+                                    <i class="fas fa-check"></i> Already Registered
+                                </button>
+                            <?php elseif ($is_full): ?>
+                                <button class="btn btn-danger w-100" disabled>
+                                    <i class="fas fa-times"></i> Event Full
+                                </button>
+                            <?php else: ?>
+                                <form method="POST">
+                                    <input type="hidden" name="event_id" value="<?php echo $event['id']; ?>">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-user-plus"></i> Register for Event
                                     </button>
-                                </div>
-                            </form>
+                                </form>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

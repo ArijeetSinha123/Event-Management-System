@@ -27,7 +27,7 @@ require_once 'includes/functions.php';
             margin-bottom: 1rem;
         }
     </style>
-    
+
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -147,6 +147,35 @@ require_once 'includes/functions.php';
                                 <a href="pages/participants.php" class="btn btn-outline-info btn-lg w-100">
                                     <i class="fas fa-users"></i><br>Participants
                                 </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Authentication Section -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h4 class="mb-0"><i class="fas fa-user-circle"></i> Get Started</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-6 mb-3">
+                                <a href="pages/register_user.php" class="btn btn-success btn-lg w-100">
+                                    <i class="fas fa-user-plus"></i><br>New User Registration
+                                </a>
+                                <p class="mt-2 text-muted">Create your account to register for events</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a href="pages/login.php" class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-sign-in-alt"></i><br>Existing User Login
+                                </a>
+                                <p class="mt-2 text-muted">Already have an account? Login here</p>
                             </div>
                         </div>
                     </div>

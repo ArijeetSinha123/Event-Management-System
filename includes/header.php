@@ -11,6 +11,7 @@
         .card { transition: transform 0.2s; }
         .card:hover { transform: translateY(-5px); }
         .event-card { border-left: 4px solid #007bff; }
+        .user-welcome { color: white; margin-right: 15px; }
     </style>
 </head>
 <body>
@@ -23,7 +24,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="../index.php"><i class="fas fa-home"></i> Home</a>
                     </li>
@@ -36,11 +37,44 @@
                     <li class="nav-item">
                         <a class="nav-link" href="participants.php"><i class="fas fa-users"></i> Participants</a>
                     </li>
+                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="admin/dashboard.php"><i class="fas fa-cog"></i> Admin</a>
                     </li>
+                    <?php endif; ?>
+                </ul>
+                
+                <ul class="navbar-nav ms-auto">
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <li class="nav-item">
+                            <span class="user-welcome">
+                                <i class="fas fa-user"></i> Welcome, <?php echo $_SESSION['user_name']; ?>
+                                <?php if ($_SESSION['user_role'] == 'admin'): ?>
+                                    <span class="badge bg-danger">Admin</span>
+                                <?php else: ?>
+                                    <span class="badge bg-success">Student</span>
+                                <?php endif; ?>
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout.php">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.php">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="register_user.php">
+                                <i class="fas fa-user-plus"></i> Register
+                            </a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container mt-4"></div>
+    <div class="container mt-4">

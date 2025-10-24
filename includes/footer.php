@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <h5>Event Management System</h5>
-                    <p>Developed by Team - PHP Project</p>
+                    <p>Developed by Jack Troller</p>
                 </div>
                 <div class="col-md-6 text-end">
                     <p>College Project<br>PHP & MySQL</p>

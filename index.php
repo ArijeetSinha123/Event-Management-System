@@ -27,6 +27,7 @@ require_once 'includes/functions.php';
             margin-bottom: 1rem;
         }
     </style>
+    
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">

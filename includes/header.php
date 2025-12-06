@@ -78,3 +78,27 @@
         </div>
     </nav>
     <div class="container mt-4">
+    
+<ul class="navbar-nav ms-auto">
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <!-- Existing user menu -->
+    <?php else: ?>
+        <!-- Add this new link -->
+        <li class="nav-item">
+            <a class="nav-link text-danger" href="pages/admin_login.php">
+                <i class="fas fa-user-shield"></i> Admin Login
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="pages/login.php">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="pages/register_user.php">
+                <i class="fas fa-user-plus"></i> Register
+            </a>
+        </li>
+    <?php endif; ?>
+</ul>

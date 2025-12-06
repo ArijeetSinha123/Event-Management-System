@@ -81,6 +81,23 @@ require_once 'includes/functions.php';
     </div>
 
     <!-- Features Section -->
+     <!-- Admin Access Section -->
+<div class="row mt-5">
+    <div class="col-md-8 mx-auto">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-user-shield"></i> Administrator Access</h5>
+            </div>
+            <div class="card-body text-center">
+                <p class="card-text">Authorized administrators can access the admin panel to manage events and users.</p>
+                <a href="pages/admin_login.php" class="btn btn-danger">
+                    <i class="fas fa-lock"></i> Admin Login
+                </a>
+                <small class="d-block mt-2 text-muted">Restricted to authorized personnel only</small>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="container mt-5">
         <h2 class="text-center mb-4">System Features</h2>
         <div class="row g-4">

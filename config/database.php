@@ -9,7 +9,7 @@ $password = '';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Start session
+// Session management - only start if not already started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }

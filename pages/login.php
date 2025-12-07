@@ -1,7 +1,7 @@
 <?php
 require_once '../config/database.php';
 
-session_start();
+
 
 // Redirect if already logged in
 if (isset($_SESSION['user_id'])) {

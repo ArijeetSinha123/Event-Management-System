@@ -1,7 +1,7 @@
 <?php
 require_once '../config/database.php';
 
-session_start();
+
 
 // If admin is already logged in, redirect to dashboard
 if (isset($_SESSION['user_id']) && $_SESSION['user_role'] == 'admin') {

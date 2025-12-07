@@ -5,11 +5,11 @@ $dbname = 'event_management';
 $username = 'root';
 $password = '';
 
-// Enable error reporting for development
+// Enable error reporting (optional)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Session management - only start if not already started
+// Session management - DO IT HERE ONLY ONCE
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }

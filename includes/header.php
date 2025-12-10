@@ -18,6 +18,7 @@ if (session_status() == PHP_SESSION_NONE) {
         .card:hover { transform: translateY(-3px); }
         .event-card { border-left: 4px solid #007bff; }
         footer { margin-top: 50px; padding: 20px 0; }
+        .nav-link { cursor: pointer; }
     </style>
 </head>
 <body>
@@ -32,21 +33,32 @@ if (session_status() == PHP_SESSION_NONE) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.php"><i class="fas fa-home"></i> Home</a>
+                        <a class="nav-link" href="../index.php">
+                            <i class="fas fa-home"></i> Home
+                        </a>
                     </li>
                     <?php if(isset($_SESSION['user_id'])): ?>
+                        <!-- ONLY SHOW THESE IF USER IS LOGGED IN -->
                         <li class="nav-item">
-                            <a class="nav-link" href="events.php"><i class="fas fa-list"></i> Events</a>
+                            <a class="nav-link" href="events.php">
+                                <i class="fas fa-list"></i> Events
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="schedule.php"><i class="fas fa-clock"></i> Schedule</a>
+                            <a class="nav-link" href="schedule.php">
+                                <i class="fas fa-clock"></i> Schedule
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="participants.php"><i class="fas fa-users"></i> Participants</a>
+                            <a class="nav-link" href="participants.php">
+                                <i class="fas fa-users"></i> Participants
+                            </a>
                         </li>
                         <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'): ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="admin/dashboard.php"><i class="fas fa-cog"></i> Admin</a>
+                                <a class="nav-link" href="admin/dashboard.php">
+                                    <i class="fas fa-cog"></i> Admin Dashboard
+                                </a>
                             </li>
                         <?php endif; ?>
                     <?php endif; ?>
@@ -54,9 +66,11 @@ if (session_status() == PHP_SESSION_NONE) {
                 
                 <ul class="navbar-nav ms-auto">
                     <?php if(isset($_SESSION['user_id'])): ?>
+                        <!-- LOGGED IN USER VIEW -->
                         <li class="nav-item">
                             <span class="nav-link">
-                                <i class="fas fa-user"></i> <?php echo $_SESSION['user_name']; ?>
+                                <i class="fas fa-user"></i> 
+                                <?php echo htmlspecialchars($_SESSION['user_name']); ?>
                                 <?php if($_SESSION['user_role'] == 'admin'): ?>
                                     <span class="badge bg-danger">Admin</span>
                                 <?php else: ?>
@@ -70,6 +84,7 @@ if (session_status() == PHP_SESSION_NONE) {
                             </a>
                         </li>
                     <?php else: ?>
+                        <!-- NOT LOGGED IN VIEW - SIMPLIFIED -->
                         <li class="nav-item">
                             <a class="nav-link" href="login.php">
                                 <i class="fas fa-sign-in-alt"></i> Login
@@ -78,17 +93,6 @@ if (session_status() == PHP_SESSION_NONE) {
                         <li class="nav-item">
                             <a class="nav-link" href="register_user.php">
                                 <i class="fas fa-user-plus"></i> Register
-                            </a>
-                        </li>
-                        <!-- 🔥 FIXED ADMIN LINK - Use full path -->
-                        <li class="nav-item">
-                          <a class="nav-link text-warning" href="../pages/admin_login.php">
-                           <i class="fas fa-user-shield"></i> Admin Login
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-warning" href="admin_login.php">
-                                <i class="fas fa-user-shield"></i> Admin
                             </a>
                         </li>
                     <?php endif; ?>

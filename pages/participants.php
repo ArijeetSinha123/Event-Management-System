@@ -1,12 +1,17 @@
 <?php
 require_once '../config/database.php';
-require_once '../includes/functions.php';
 
-// Get event ID from query string
-$event_id = $_GET['event_id'] ?? null;
+// Check login
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+// Get event ID from URL
+$event_id = $_GET['event_id'] ?? 0;
 
 // Get all events for dropdown
-$events = $pdo->query("SELECT * FROM events ORDER BY event_date")->fetchAll();
+$events = $pdo->query("SELECT id, title FROM events ORDER BY event_date")->fetchAll();
 
 if ($event_id) {
     // Get participants for specific event
@@ -21,69 +26,57 @@ if ($event_id) {
     $participants = $stmt->fetchAll();
     
     // Get event details
-    $event_stmt = $pdo->prepare("SELECT * FROM events WHERE id = ?");
+    $event_stmt = $pdo->prepare("SELECT title FROM events WHERE id = ?");
     $event_stmt->execute([$event_id]);
-    $current_event = $event_stmt->fetch();
+    $event = $event_stmt->fetch();
 } else {
-    // Get all participants across all events
-    $stmt = $pdo->query("
+    // Get all participants
+    $all_participants = $pdo->query("
         SELECT e.title as event_title, u.student_id, u.name, u.email, r.registration_date 
         FROM registrations r 
         JOIN users u ON r.user_id = u.id 
         JOIN events e ON r.event_id = e.id 
         ORDER BY e.event_date, r.registration_date
-    ");
-    $all_participants = $stmt->fetchAll();
+    ")->fetchAll();
 }
 ?>
 
 <?php include '../includes/header.php'; ?>
 
 <div class="container">
-    <h1 class="text-center mb-4">👥 Event Participants</h1>
-
-    <!-- Event Selection -->
+    <h1 class="text-center mb-4">Event Participants</h1>
+    
+    <!-- Event Filter -->
     <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0"><i class="fas fa-filter"></i> Filter Participants</h5>
-        </div>
         <div class="card-body">
-            <form method="GET" class="row g-3 align-items-end">
+            <form method="GET" class="row">
                 <div class="col-md-8">
-                    <label class="form-label">Select Event:</label>
+                    <label>Select Event:</label>
                     <select name="event_id" class="form-select" onchange="this.form.submit()">
                         <option value="">All Events</option>
-                        <?php foreach ($events as $event): ?>
-                            <option value="<?php echo $event['id']; ?>" 
-                                <?php echo ($event_id == $event['id']) ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($event['title'] . ' - ' . formatDate($event['event_date'])); ?>
+                        <?php foreach ($events as $ev): ?>
+                            <option value="<?php echo $ev['id']; ?>" <?php echo ($event_id == $ev['id']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($ev['title']); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary w-100">Show Participants</button>
                 </div>
             </form>
         </div>
     </div>
-
+    
     <!-- Participants List -->
-    <?php if ($event_id && $current_event): ?>
+    <?php if ($event_id && isset($event)): ?>
         <div class="card">
             <div class="card-header bg-success text-white">
-                <h5 class="mb-0">
-                    <i class="fas fa-users"></i> 
-                    Participants for: <?php echo htmlspecialchars($current_event['title']); ?>
-                    <span class="badge bg-light text-dark ms-2"><?php echo count($participants); ?> registered</span>
-                </h5>
+                <h5>Participants for: <?php echo htmlspecialchars($event['title']); ?></h5>
             </div>
             <div class="card-body">
                 <?php if (empty($participants)): ?>
-                    <div class="alert alert-warning text-center">
-                        <h5>No participants registered for this event yet.</h5>
-                        <p>Be the first to <a href="events.php" class="alert-link">register</a>!</p>
-                    </div>
+                    <p class="text-center">No participants registered yet.</p>
                 <?php else: ?>
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -92,16 +85,16 @@ if ($event_id) {
                                     <th>Student ID</th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Registration Date</th>
+                                    <th>Registered On</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($participants as $participant): ?>
+                                <?php foreach ($participants as $p): ?>
                                     <tr>
-                                        <td><?php echo $participant['student_id']; ?></td>
-                                        <td><?php echo htmlspecialchars($participant['name']); ?></td>
-                                        <td><?php echo htmlspecialchars($participant['email']); ?></td>
-                                        <td><?php echo formatDate($participant['registration_date']); ?></td>
+                                        <td><?php echo $p['student_id']; ?></td>
+                                        <td><?php echo htmlspecialchars($p['name']); ?></td>
+                                        <td><?php echo htmlspecialchars($p['email']); ?></td>
+                                        <td><?php echo date('M d, Y', strtotime($p['registration_date'])); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -111,17 +104,14 @@ if ($event_id) {
             </div>
         </div>
     <?php elseif (!$event_id): ?>
-        <!-- All Participants View -->
+        <!-- All Participants -->
         <div class="card">
             <div class="card-header bg-info text-white">
-                <h5 class="mb-0"><i class="fas fa-list"></i> All Participants Across Events</h5>
+                <h5>All Participants</h5>
             </div>
             <div class="card-body">
                 <?php if (empty($all_participants)): ?>
-                    <div class="alert alert-info text-center">
-                        <h5>No registrations found.</h5>
-                        <p><a href="events.php" class="alert-link">Register for events</a> to see participants here.</p>
-                    </div>
+                    <p class="text-center">No registrations found.</p>
                 <?php else: ?>
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -131,17 +121,17 @@ if ($event_id) {
                                     <th>Student ID</th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Registration Date</th>
+                                    <th>Registered On</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($all_participants as $participant): ?>
+                                <?php foreach ($all_participants as $p): ?>
                                     <tr>
-                                        <td><strong><?php echo htmlspecialchars($participant['event_title']); ?></strong></td>
-                                        <td><?php echo $participant['student_id']; ?></td>
-                                        <td><?php echo htmlspecialchars($participant['name']); ?></td>
-                                        <td><?php echo htmlspecialchars($participant['email']); ?></td>
-                                        <td><?php echo formatDate($participant['registration_date']); ?></td>
+                                        <td><strong><?php echo htmlspecialchars($p['event_title']); ?></strong></td>
+                                        <td><?php echo $p['student_id']; ?></td>
+                                        <td><?php echo htmlspecialchars($p['name']); ?></td>
+                                        <td><?php echo htmlspecialchars($p['email']); ?></td>
+                                        <td><?php echo date('M d, Y', strtotime($p['registration_date'])); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -153,4 +143,4 @@ if ($event_id) {
     <?php endif; ?>
 </div>
 
-<?php include '../includes/footer.php'; ?>s
+<?php include '../includes/footer.php'; ?>

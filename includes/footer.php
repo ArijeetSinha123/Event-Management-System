@@ -1,17 +1,12 @@
-    </div>
-    <footer class="bg-dark text-white mt-5">
-        <div class="container py-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>Event Management System</h5>
-                    <p>Developed by Team-Event Management</p>
-                </div>
-                <div class="col-md-6 text-end">
-                    <p>College Project<br>PHP & MySQL</p>
-                </div>
-            </div>
+    </div> <!-- Close container from header -->
+    
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0">Event Management System &copy; 2024</p>
+            <p class="mb-0">Developed as College Project - PHP & MySQL</p>
         </div>
     </footer>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

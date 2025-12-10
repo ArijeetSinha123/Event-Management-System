@@ -5,11 +5,7 @@ $dbname = 'event_management';
 $username = 'root';
 $password = '';
 
-// Enable error reporting (optional)
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Session management - DO IT HERE ONLY ONCE
+// Start session safely (ONLY ONCE)
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -24,7 +20,11 @@ try {
     // Set default fetch mode
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     
+    // Optional: Set character set
+    $pdo->exec("SET NAMES utf8");
+    
 } catch(PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
+    // Don't show detailed error to users
+    die("Database connection failed. Please try again later.");
 }
 ?>

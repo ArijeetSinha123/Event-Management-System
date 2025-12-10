@@ -1,3 +1,9 @@
+<?php
+// Start session only if not started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,16 +15,16 @@
     <style>
         .navbar-brand { font-weight: bold; }
         .card { transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); }
+        .card:hover { transform: translateY(-3px); }
         .event-card { border-left: 4px solid #007bff; }
-        .user-welcome { color: white; margin-right: 15px; }
+        footer { margin-top: 50px; padding: 20px 0; }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="../index.php">
-                <i class="fas fa-calendar-alt"></i> Event Management System
+                <i class="fas fa-calendar-alt"></i> Event Management
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -28,28 +34,30 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../index.php"><i class="fas fa-home"></i> Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="events.php"><i class="fas fa-list"></i> Events</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="schedule.php"><i class="fas fa-clock"></i> Schedule</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="participants.php"><i class="fas fa-users"></i> Participants</a>
-                    </li>
-                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin/dashboard.php"><i class="fas fa-cog"></i> Admin</a>
-                    </li>
+                    <?php if(isset($_SESSION['user_id'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="events.php"><i class="fas fa-list"></i> Events</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="schedule.php"><i class="fas fa-clock"></i> Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="participants.php"><i class="fas fa-users"></i> Participants</a>
+                        </li>
+                        <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="admin/dashboard.php"><i class="fas fa-cog"></i> Admin</a>
+                            </li>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </ul>
                 
                 <ul class="navbar-nav ms-auto">
-                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <?php if(isset($_SESSION['user_id'])): ?>
                         <li class="nav-item">
-                            <span class="user-welcome">
-                                <i class="fas fa-user"></i> Welcome, <?php echo $_SESSION['user_name']; ?>
-                                <?php if ($_SESSION['user_role'] == 'admin'): ?>
+                            <span class="nav-link">
+                                <i class="fas fa-user"></i> <?php echo $_SESSION['user_name']; ?>
+                                <?php if($_SESSION['user_role'] == 'admin'): ?>
                                     <span class="badge bg-danger">Admin</span>
                                 <?php else: ?>
                                     <span class="badge bg-success">Student</span>
@@ -72,33 +80,21 @@
                                 <i class="fas fa-user-plus"></i> Register
                             </a>
                         </li>
+                        <!-- 🔥 FIXED ADMIN LINK - Use full path -->
+                        <li class="nav-item">
+                          <a class="nav-link text-warning" href="../pages/admin_login.php">
+                           <i class="fas fa-user-shield"></i> Admin Login
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-warning" href="admin_login.php">
+                                <i class="fas fa-user-shield"></i> Admin
+                            </a>
+                        </li>
                     <?php endif; ?>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container mt-4">
     
-<ul class="navbar-nav ms-auto">
-    <?php if (isset($_SESSION['user_id'])): ?>
-        <!-- Existing user menu -->
-    <?php else: ?>
-        <!-- Add this new link -->
-        <li class="nav-item">
-            <a class="nav-link text-danger" href="pages/admin_login.php">
-                <i class="fas fa-user-shield"></i> Admin Login
-            </a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link" href="pages/login.php">
-                <i class="fas fa-sign-in-alt"></i> Login
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="pages/register_user.php">
-                <i class="fas fa-user-plus"></i> Register
-            </a>
-        </li>
-    <?php endif; ?>
-</ul>
+    <div class="container mt-4">

@@ -1,6 +1,12 @@
 <?php
+// Start session
 session_start();
+
+// Clear session
+session_unset();
 session_destroy();
-header('Location: ../index.php');
+
+// Redirect
+header("Location: ../index.php");
 exit;
 ?>

@@ -3,7 +3,7 @@ require_once '../config/database.php';
 require_once '../includes/functions.php';
 
 // Check if user is logged in
-session_start();
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;

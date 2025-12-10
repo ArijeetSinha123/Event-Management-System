@@ -2,8 +2,8 @@
     
     <footer class="bg-dark text-white text-center py-4 mt-5">
         <div class="container">
-            <p class="mb-0">Event Management System &copy; 2024</p>
-            <p class="mb-0">Developed as College Project - PHP & MySQL</p>
+            <p class="mb-0">Event Management System &copy; 2025</p>
+            <p class="mb-0">Developed as College Project BCA K1 - PHP & MySQL</p>
         </div>
     </footer>
     

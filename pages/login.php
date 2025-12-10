@@ -23,19 +23,24 @@ if ($_POST) {
             $stmt->execute([$email]);
             $user = $stmt->fetch();
             
+            
             if ($user && password_verify($password, $user['password'])) {
-                // Login successful
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_name'] = $user['name'];
-                $_SESSION['user_email'] = $user['email'];
-                $_SESSION['user_role'] = $user['role'];
-                $_SESSION['student_id'] = $user['student_id'];
-                
-                header('Location: events.php');
-                exit;
-            } else {
-                $error = "Invalid email or password!";
-            }
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['name'];
+    $_SESSION['user_role'] = $user['role']; // Important!
+    
+    // Students go to events.php
+    if ($user['role'] == 'student') {
+        header('Location: events.php');
+    } 
+    // Admins go to dashboard (but they should use admin_login.php)
+    elseif ($user['role'] == 'admin') {
+        header('Location: admin/dashboard.php');
+    }
+    exit;
+}
+
+
         } catch(PDOException $e) {
             $error = "Login failed: " . $e->getMessage();
         }

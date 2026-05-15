@@ -1,6 +1,6 @@
 # Event Management System
 
-A comprehensive PHP and MySQL-based Event Management System that allows users to register for events, view schedules, and check participant lists. Built as an academic project for PHP coursework.
+A comprehensive PHP and MySQL-based Event Management System that allows users to register for events, view schedules, and check participant lists.
 
 ## 📋 Table of Contents
 
@@ -170,7 +170,7 @@ This project is open source and available under the MIT License.
 
 ---
 
-**Author**: Arijeet Sinha
+**Author**: Arijeet Sinha & Argha Das
 **Created**: October 18, 2025  
 **Last Updated**: May 15, 2026
 

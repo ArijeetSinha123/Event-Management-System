@@ -174,4 +174,5 @@ This project is open source and available under the MIT License.
 **Created**: October 18, 2025 <br>
 **Last Updated**: May 15, 2026
 
+
 For more information or support, please open an issue on the [GitHub repository](https://github.com/ArijeetSinha123/Event-Management-System).

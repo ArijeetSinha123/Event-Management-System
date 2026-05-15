@@ -90,7 +90,7 @@ Before you begin, ensure you have the following installed:
 
 ```
 Event-Management-System/
-├── index.php                 # Homepage
+├── index.php                # Homepage
 ├── config.php               # Database configuration
 ├── login.php                # User login page
 ├── register.php             # User registration page
@@ -170,7 +170,7 @@ This project is open source and available under the MIT License.
 
 ---
 
-**Author**: Arijeet Sinha  
+**Author**: Arijeet Sinha
 **Created**: October 18, 2025  
 **Last Updated**: May 15, 2026
 
